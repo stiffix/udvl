@@ -6,6 +6,7 @@ Stránka predmetu je http://dai.fmph.uniba.sk/~siska/udvl/.
 Oznamy
 ------
 
+* **27.3.** Midterm bude vo štvrtok 10.4. o 18:10 (po cvičeniach) v posluchárni B.
 * **21.3.** du01: pridaná možnosť odovzdávať .txt a poznámka o tom ako nahrávať binárne súbory
 
 Cvičenia
