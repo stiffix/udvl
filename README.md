@@ -6,6 +6,12 @@ Stránka predmetu je http://dai.fmph.uniba.sk/~siska/udvl/.
 Oznamy
 ------
 
+* **28.3.** Prehľad o všetkých bodoch z cvičení a úloh si môžete pozrieť v súbore
+    `report.md` vo vetve `report` (samozrejme nájdete ich aj v príslušných pull
+    requestoch). Priame url je (nezabudnite nahradiť LOGIN za vaše
+    prihlasovacie meno):
+
+       https://github.com/FMFI-UK-1-AIN-411-2014/LOGIN/blob/report/report.md
 * **27.3.** Midterm bude vo štvrtok 10.4. o 18:10 (po cvičeniach) v posluchárni B.
 * **21.3.** du01: pridaná možnosť odovzdávať .txt a poznámka o tom ako nahrávať binárne súbory
 
