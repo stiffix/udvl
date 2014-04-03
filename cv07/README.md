@@ -71,7 +71,7 @@ Samozrejme fungovať bude korektne až keď korektne naimplementujete `toCnf`.
 
 ## Technické detaily riešenia
 
-Riešenie odovzdajte do vetvy `cv05` v adresári `cv05`.  Odovzdávajte
+Riešenie odovzdajte do vetvy `cv07` v adresári `cv07`.  Odovzdávajte
 (modifikujte) súbor `formula.py`. Program [`cv07test.py`](cv07test.py) musí
 korektne zbehnúť s vašou knižnicou.
 
