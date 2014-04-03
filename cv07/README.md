@@ -66,6 +66,13 @@ class Disjunction(Formula):
             rCnf.append(rClause)
 ```
 
+## prove.py
+
+V súbore [`prove.py`](prove.py) je ukážka veľmi jednoduchej funkcie, ktorá
+všetky naše doteraz implementované triedy používa, aby pomocou SAT solvera
+dokazovala, či nejaká formula vyplýva z nejakej teórie (množiny formúl).
+Samozrejme fungovať bude korektne až keď korektne naimplementujete `toCnf`.
+
 ## Technické detaily riešenia
 
 Riešenie odovzdajte do vetvy `cv05` v adresári `cv05`.  Odovzdávajte
