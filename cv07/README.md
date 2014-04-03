@@ -40,30 +40,26 @@ ale treba dať pozor na "zacyklenie").
 Príklad pre disjunkciu:
 ```python
 class Disjunction(Formula):
-    def toCnf(self):
-        # prevedieme vsetky podrofmuly do cnf
-        cnfs = []
-        for sf in self.subf:
-            cnfs.append(sf.toCnf())
-
-        # roznmasobime ich, pricom vzniknute klauzy
-        # ukladame do f
-        f = Cnf()
-        self.doProduct(cnfs, 0, CnfClause(), f)
-        return f
-
-    ##
-    # V kazdom rekurzivnom vnoreni vyberieme jednu klauzu a
-    # tie potom spojime do jednej (ale robime to uz priebezne
-    # v parametri  rClause) a tu pridame do rCnf
     def doProduct(self, cnfs, level, rClause, rCnf):
         if level < len(cnfs):
             for clause in cnfs[level]:
                 extRClause = copy.deepcopy(rClause)
-                extRClause.append(clause)
+                extRClause.extend(copy.deepcopy(clause))
                 self.doProduct(cnfs, level+1, extRClause, rCnf)
         else:
             rCnf.append(rClause)
+
+    def toCnf(self):
+        # prevedieme vsetky podrofmuly do cnf
+        cnfs = []
+        for sf in self.subf():
+            cnfs.append(sf.toCnf())
+
+        # roznmasobime ich, pricom vzniknute klauzy
+        # ukladame do f
+        c = cnf.Cnf()
+        self.doProduct(cnfs, 0, cnf.CnfClause(), c)
+        return c
 ```
 
 ## prove.py
