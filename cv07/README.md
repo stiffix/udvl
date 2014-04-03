@@ -15,6 +15,57 @@ Do tried na reprezentáciu formúl z cvičenia 3 doimplementujte metódu `toCnf(
 ktorá vráti ekvisplniteľnú (alebo equivalentnu) formulu v konjunktívnej
 normálnej forme reprezentovanú pomocou tried z cvičenia 5.
 
+Na prednáške bolo spomenutých niekoľkoľko rôznych prístupov s rôznymi
+vlastnosťami. Pri našej reprezentácii formúl je asi najjednoduchšií (na
+naprogramovanie :) spôsob taký, že každej z našich predchádzajúcich tried
+implementujeme virtuálnu metódu toCnf, ktorá daný typ preloží do Cnf, s tým, že
+rekurívne zavolá toCnf na svoje podformuly a potom ich nejak spojí / upraví.
+
+Premenná jednoducho vráti Cnf s jednou Cnf klauzou v ktorej je jedna Cnf premenná
+
+Konjunkcia zavolá toCnf na jednotlivé konjunkty, dostane niekoľko Cnf a vyrobí
+z nej jednu tak, že jednoducho dá dokopy všetky Cnf klauzy.
+
+Disjunkcia už je zložitejšia, pretože čiastočné Cnf pre jednotlivé disjunkty
+musíme medzi sebou "roznásobiť", pričom roznásobujeme ľubovoľne veľa
+disjunktov, ktoré môžu obsahovať ľubovoľne veľa klauz.
+
+V prípade negácie sa dostaneme tiež k podobnému problému (oplatí sa
+optimalizovať / špecialne ošetriť prípad keď je v nej iba premenná).
+
+Implikácia (a podobne aj ekvivalencia) sa najjednoduchšie implemetuje tak, že z
+nej spravíme disjunkciu a zavoláme toCnf na nej :) (pri takýchto operáciách si
+ale treba dať pozor na "zacyklenie").
+
+Príklad pre disjunkciu:
+```python
+class Disjunction(Formula):
+    def toCnf(self):
+        # prevedieme vsetky podrofmuly do cnf
+        cnfs = []
+        for sf in self.subf:
+            cnfs.append(sf.toCnf())
+
+        # roznmasobime ich, pricom vzniknute klauzy
+        # ukladame do f
+        f = Cnf()
+        self.doProduct(cnfs, 0, CnfClause(), f)
+        return f
+
+    ##
+    # V kazdom rekurzivnom vnoreni vyberieme jednu klauzu a
+    # tie potom spojime do jednej (ale robime to uz priebezne
+    # v parametri  rClause) a tu pridame do rCnf
+    def doProduct(self, cnfs, level, rClause, rCnf):
+        if level < len(cnfs):
+            for clause in cnfs[level]:
+                extRClause = copy.deepcopy(rClause)
+                extRClause.append(clause)
+                self.doProduct(cnfs, level+1, extRClause, rCnf)
+        else:
+            rCnf.append(rClause)
+```
+
 ## Technické detaily riešenia
 
 Riešenie odovzdajte do vetvy `cv05` v adresári `cv05`.  Odovzdávajte
