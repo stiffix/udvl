@@ -38,6 +38,7 @@ Domáce úlohy
 ------------
 
 * [DU 1](du01) (do Štvrtku 27.3. 9:55)
+* [DU 2](du02) (do Štvrtku 17.4. 9:55)
 
 [Inštrukcie na odovzdávanie riešení](odovzdavanie.md)
 
