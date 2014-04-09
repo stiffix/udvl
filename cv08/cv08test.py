@@ -161,7 +161,7 @@ class Tester(object):
                     'Node (%d) is a result of ALPHA rule for (%d) -- must have no siblings.' %
                     ( node.number, src.number )
                     )
-            if True or (src.formula.getType(src.sign) == BETA and
+            if (src.formula.getType(src.sign) == BETA and
                 len(parent.children) != len(strSourceSubfs)):
                 raise BadTableauException(
                     'Node (%d) should have %d siblings -- results of BETA rule for (%d).' %
