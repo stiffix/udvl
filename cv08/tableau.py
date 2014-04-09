@@ -42,7 +42,7 @@ class Node(object):
     
     _separator = ' | '
     
-    def _firstLine(self):
+    def label(self):
         nsf = '({}) {}'.format(self.number,
                                signedFormToString((self.formula, self.sign)))
         if self.source != None:
@@ -51,7 +51,7 @@ class Node(object):
             return nsf
 
     def _width(self):
-        form_wd = len( self._firstLine() )
+        form_wd = len( self.label() )
         children_wd = sum( [ child._width() for child in self.children ] )
         children_wd += len(self._separator) * max(0, len(self.children) - 1)
         return max(form_wd, children_wd)
@@ -59,7 +59,7 @@ class Node(object):
     def _lines(self):
         width = self._width()
 
-        lines = [ self._firstLine() ]
+        lines = [ self.label() ]
         if self.children:
             if len(self.children) > 1:
                 lines.append('-' * width)
