@@ -13,7 +13,7 @@ import itertools
 stopOnError = False
 
 from builder import TableauBuilder
-from tableau import Node, signedFormToString
+from tableau import Node, signedFormToString, ALPHA, BETA
 from formula import Formula, Variable, Negation, Conjunction, Disjunction, Implication, Equivalence
 
 def printException():
@@ -30,6 +30,9 @@ def now():
        return time.time() # this is not monotonic!
 
 class FailedTestException(BaseException):
+    pass
+
+class BadTableauException(BaseException):
     pass
 
 class Tester(object):
@@ -63,15 +66,119 @@ class Tester(object):
         else:
             print("ERROR")
     
-    def closed_open(self, closed):
+    def closedToString(self, closed):
         return "CLOSED" if closed else "OPEN"
+    
+    def typeToString(self, fType):
+        if fType == ALPHA:
+            return "ALPHA"
+        if fType == BETA:
+            return "BETA"
+        return str(fType)
+    
+    def testSignedForm(self, f, expTypeT, expSfsT):
+        self.case += 1
+        self.tested += 1
+        print("CASE %d: %s" % (self.case, f.toString()))
+        sfsT = frozenset()
+        sfsF = frozenset()
+        try:
+            start = now()
+            typeT = f.getType(True)
+            typeF = f.getType(False)
+            sfsT = frozenset([signedFormToString(sf) for sf in f.signedSubf(True)])
+            sfsF = frozenset([signedFormToString(sf) for sf in f.signedSubf(False)])
+            duration = now() - start
+        except KeyboardInterrupt:
+            raise KeyboardInterrupt()
+        except:
+            printException()
+            if stopOnError:
+                raise FailedTestException()
+            return
+        
+        expSfsF = frozenset([ signedFormToString((f, not s))
+                              for f, s in expSfsT ])
+        expSfsT = frozenset([ signedFormToString(sf) for sf in expSfsT ])
+        sameT = expSfsT == sfsT
+        sameF = expSfsF == sfsF
+        okTypeT = len(expSfsT) <= 1 or expTypeT == typeT
+        okTypeF = len(expSfsF) <= 1 or (ALPHA if expTypeT == BETA else BETA) == typeF
+
+        self.time += duration
+
+        if sameT and sameF and okTypeT and okTypeF:
+            self.passed += 1
+            print('PASSED:  time: %12.9f' % (duration,))
+        else:
+            print('FAILED:')
+            fstrT = signedFormToString((f,True))
+            fstrF = signedFormToString((f,False))
+            if not okTypeT:
+                print( 'Unexpected type of %s: %s\n' %
+                        (fstrT, self.typeToString(typeT)) )
+            if not okTypeF:
+                print( 'Unexpected type of %s: %s\n' %
+                        (fstrF, self.typeToString(typeF)) )
+            if not sameT:
+                print( 'Unexpected subformulas of %s:\n%s\n' %
+                        (fstrT, '\n'.join(sfsT)) )
+            if not sameF:
+                print( 'Unexpected subformulas of %s:\n%s\n' %
+                        (fstrF, '\n'.join(sfsF)) )
+            if stopOnError:
+                raise FailedTestException()
+        print('')
+        
+    def testTableauStructure(self, node, ancestors, strSfs):
+        strSf = signedFormToString((node.formula, node.sign))
+        if node.source == None:
+            if strSf not in strSfs:
+                raise BadTableauException(
+                    'Node (%d) has no source node and its formula not initial.' %
+                    (node.number,)
+                    )
+        elif node.source not in ancestors:
+            raise BadTableauException(
+                'Node (%d) has source (%d) which is not one of its ancestors.' %
+                (node.number, node.source.number,)
+                )
+        else:
+            src = node.source
+            parent = ancestors[-1]
+            strSourceSubfs = [
+                signedFormToString(sf)
+                for sf in src.formula.signedSubf(src.sign)
+                ]
+            if strSf not in strSourceSubfs:
+                raise BadTableauException(
+                    'Node (%d) does not contain a subformula of (%d).' %
+                    ( node.number, src.number )
+                    )
+            if (src.formula.getType(src.sign) == ALPHA and
+                len(parent.children) != 1):
+                raise BadTableauException(
+                    'Node (%d) is a result of ALPHA rule for (%d) -- must have no siblings.' %
+                    ( node.number, src.number )
+                    )
+            if True or (src.formula.getType(src.sign) == BETA and
+                len(parent.children) != len(strSourceSubfs)):
+                raise BadTableauException(
+                    'Node (%d) should have %d siblings -- results of BETA rule for (%d).' %
+                    ( node.number, len(strSourceSubfs)-1, src.number )
+                    )
+        ancestors.append(node)
+        for child in node.children:
+            self.testTableauStructure(child, ancestors, strSfs)
+        ancestors.pop()
 
     def testTableau(self, expect_closed, sfs):
         self.case += 1
         self.tested += 1
+        strSfs = [signedFormToString(sf) for sf in sfs ]
         print("CASE %d: %s" %
                 (self.case,
-                 '; '.join([signedFormToString(sf) for sf in sfs ])))
+                 '; '.join(strSfs)))
         tableau = Node(Variable(""), False)
         try:
             start = now()
@@ -91,6 +198,17 @@ class Tester(object):
             return
 
         closed = tableau.isClosed()
+        badStructure = False
+        try:
+            self.testTableauStructure(tableau, [], strSfs)
+        except BadTableauException as err:
+            badStructure = str(err)
+        except:
+            printException()
+            if stopOnError:
+                raise FailedTestException()
+            return
+
         size = tableau.numberOfNodes()
 
         self.time += duration
@@ -99,14 +217,18 @@ class Tester(object):
         if closed:
             self.closed += 1
 
-        if closed == expect_closed:
+        if closed == expect_closed and not badStructure:
             self.passed += 1
             print('PASSED:  time: %12.9f   tableau size: %3d   %s' %
-                    (duration, size, self.closed_open(closed)))
+                    (duration, size, self.closedToString(closed)))
         else:
-            print('FAILED: \n=====TABLEAU=====\n%s\n%s\nTableau is %s, but should be %s' %
-                    (tableau.toString(), '='*13,
-                     self.closed_open(closed), self.closed_open(expect_closed)))
+            print('FAILED: \n=====TABLEAU=====\n%s\n%s' %
+                    (tableau.toString(), '='*13))
+            if closed != expect_closed:
+                print('Tableau is %s, but should be %s' %
+                        (self.closedToString(closed), self.closedToString(expect_closed)))
+            if badStructure:
+                print(badStructure)
             if stopOnError:
                 raise FailedTestException()
         print('')
@@ -137,7 +259,44 @@ d = Var('d')
 
 
 try:
-    ### TODO: detailne testy
+    t.testSignedForm( a, None, [] )
+
+    t.testSignedForm( Not(a), None, [ (a, False) ])
+
+    t.testSignedForm( And([a, b]),
+                      ALPHA,
+                      [ (a, True), (b, True) ]
+                    )
+    
+    t.testSignedForm( Or([a, b]),
+                      BETA,
+                      [ (a, True), (b, True) ]
+                    )
+    
+    t.testSignedForm( And([a, b, c, d]),
+                      ALPHA,
+                      [ (a, True), (b, True), (c, True), (d, True) ]
+                    )
+    
+    t.testSignedForm( Or([a, b, c, d]),
+                      BETA,
+                      [ (a, True), (b, True), (c, True), (d, True) ]
+                    )
+    
+    t.testSignedForm( Or([a, Not(b), And(c, d) ]),
+                      BETA,
+                      [ (a, True), (Not(b), True), (And([c, d]), True) ]
+                    )
+    
+    t.testSignedForm( Impl(a, b),
+                      BETA,
+                      [ (a, False), (b, True) ]
+                    )
+    
+    t.testSignedForm( Equivalence(a, b),
+                      ALPHA,
+                      [ (Impl(a,b), True), (Impl(b,a), True) ]
+                    )
     
     demorgan1 = Equivalence( Not( And([ a, b ]) ), Or([ Not(a), Not(b) ]) )
     t.testTableau(True, [ (demorgan1, False) ])
