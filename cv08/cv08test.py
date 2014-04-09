@@ -17,7 +17,7 @@ from tableau import Node, signedFormToString, ALPHA, BETA
 from formula import Formula, Variable, Negation, Conjunction, Disjunction, Implication, Equivalence
 
 def printException():
-    print('ERROR: Exception raised in toCnf:\n%s\n%s\n%s' % (
+    print('ERROR: Exception raised:\n%s\n%s\n%s' % (
         '-'*20,
         traceback.format_exc(),
         '-'*20)
@@ -97,8 +97,8 @@ class Tester(object):
                 raise FailedTestException()
             return
         
-        expSfsF = frozenset([ signedFormToString((f, not s))
-                              for f, s in expSfsT ])
+        expSfsF = frozenset([ signedFormToString((not s, f))
+                              for s, f in expSfsT ])
         expSfsT = frozenset([ signedFormToString(sf) for sf in expSfsT ])
         sameT = expSfsT == sfsT
         sameF = expSfsF == sfsF
@@ -112,8 +112,8 @@ class Tester(object):
             print('PASSED:  time: %12.9f' % (duration,))
         else:
             print('FAILED:')
-            fstrT = signedFormToString((f,True))
-            fstrF = signedFormToString((f,False))
+            fstrT = signedFormToString((True, f))
+            fstrF = signedFormToString((False, f))
             if not okTypeT:
                 print( 'Unexpected type of %s: %s\n' %
                         (fstrT, self.typeToString(typeT)) )
@@ -131,7 +131,7 @@ class Tester(object):
         print('')
         
     def testTableauStructure(self, node, ancestors, strSfs):
-        strSf = signedFormToString((node.formula, node.sign))
+        strSf = signedFormToString((node.sign, node.formula))
         if node.source == None:
             if strSf not in strSfs:
                 raise BadTableauException(
@@ -179,7 +179,7 @@ class Tester(object):
         print("CASE %d: %s" %
                 (self.case,
                  '; '.join(strSfs)))
-        tableau = Node(Variable(""), False)
+        tableau = Node(False, Variable(""))
         try:
             start = now()
             tableau = TableauBuilder().build(sfs)
@@ -261,93 +261,93 @@ d = Var('d')
 try:
     t.testSignedForm( a, None, [] )
 
-    t.testSignedForm( Not(a), None, [ (a, False) ])
+    t.testSignedForm( Not(a), None, [ (False, a) ])
 
     t.testSignedForm( And([a, b]),
                       ALPHA,
-                      [ (a, True), (b, True) ]
+                      [ (True, a), (True, b) ]
                     )
     
     t.testSignedForm( Or([a, b]),
                       BETA,
-                      [ (a, True), (b, True) ]
+                      [ (True, a), (True, b) ]
                     )
     
     t.testSignedForm( And([a, b, c, d]),
                       ALPHA,
-                      [ (a, True), (b, True), (c, True), (d, True) ]
+                      [ (True, a), (True, b), (True, c), (True, d) ]
                     )
     
     t.testSignedForm( Or([a, b, c, d]),
                       BETA,
-                      [ (a, True), (b, True), (c, True), (d, True) ]
+                      [ (True, a), (True, b), (True, c), (True, d) ]
                     )
     
     t.testSignedForm( Or([a, Not(b), And(c, d) ]),
                       BETA,
-                      [ (a, True), (Not(b), True), (And([c, d]), True) ]
+                      [ (True, a), (True, Not(b)), (True, And([c, d])) ]
                     )
     
     t.testSignedForm( Impl(a, b),
                       BETA,
-                      [ (a, False), (b, True) ]
+                      [ (False, a), (True, b) ]
                     )
     
     t.testSignedForm( Equivalence(a, b),
                       ALPHA,
-                      [ (Impl(a,b), True), (Impl(b,a), True) ]
+                      [ (True, Impl(a,b)), (True, Impl(b,a)) ]
                     )
     
     demorgan1 = Equivalence( Not( And([ a, b ]) ), Or([ Not(a), Not(b) ]) )
-    t.testTableau(True, [ (demorgan1, False) ])
+    t.testTableau(True, [ (False, demorgan1) ])
     
     demorgan2 = Equivalence( Not( Or([ a, b ]) ), And([ Not(a), Not(b) ]) )
-    t.testTableau(True, [ (demorgan2, False) ])
+    t.testTableau(True, [ (False, demorgan2) ])
     
     demorgan3 = Equivalence( Not( Or([ a, b, c ]) ),
                              And([ Not(a), Not(b), Not(c) ]) )
-    t.testTableau(True, [ (demorgan3, False) ])
+    t.testTableau(True, [ (False, demorgan3) ])
     
     contraposition = Equivalence( Impl(a, b), Impl( Not(b), Not(a) ) )
-    t.testTableau(True, [ (contraposition, False) ])
+    t.testTableau(True, [ (False, contraposition) ])
     
     impl_impl_distrib = Impl( Impl(a, Impl(b, c)),
                               Impl( Impl(a, b), Impl(a, c) ) )
-    t.testTableau(True, [ (impl_impl_distrib, False) ])
+    t.testTableau(True, [ (False, impl_impl_distrib) ])
     
     impl_or = Equivalence( Impl(a, b), Or([ Not(a), b ]) )
-    t.testTableau(True, [ (impl_or, False) ])
+    t.testTableau(True, [ (False, impl_or) ])
     
     impl_and = Equivalence( Impl(a, b), Not( And([ a, Not(b) ]) ) )
-    t.testTableau(True, [ (impl_and, False) ])
+    t.testTableau(True, [ (False, impl_and) ])
     
     or_and_distrib = Equivalence( Or([ a, And([ b, c ]) ]),
                                   And([ Or([ a, b ]), Or([ a, c ]) ]) )
-    t.testTableau(True, [ (or_and_distrib, False) ])
+    t.testTableau(True, [ (False, or_and_distrib) ])
     
     bad_demorgan1 = Equivalence( Not( And([ a, b ]) ), Or([ a, b ]) )
-    t.testTableau(False, [ (bad_demorgan1, False) ])
+    t.testTableau(False, [ (False, bad_demorgan1) ])
     
     bad_demorgan2 = Equivalence( Not( Or([ a, b ]) ), Or([ Not(a), Not(b) ]) )
-    t.testTableau(False, [ (bad_demorgan2, False) ])
+    t.testTableau(False, [ (False, bad_demorgan2) ])
     
     bad_demorgan3 = Equivalence( Not( Or([ a, b, c ]) ),
                              And([ Not(a), b, Not(c) ]) )
-    t.testTableau(False, [ (bad_demorgan3, False) ])
+    t.testTableau(False, [ (False, bad_demorgan3) ])
     
     bad_contraposition = Equivalence( Impl(a, b), Impl( b, a ) )
-    t.testTableau(False, [ (bad_contraposition, False) ])
+    t.testTableau(False, [ (False, bad_contraposition) ])
     
     bad_impl_impl_distrib = Impl( Impl(a, Impl(b, c)),
                               Impl( Impl(b, a), Impl(c, a) ) )
-    t.testTableau(False, [ (bad_impl_impl_distrib, False) ])
+    t.testTableau(False, [ (False, bad_impl_impl_distrib) ])
     
     bad_impl_and = Equivalence( Impl(a, b), Not( And([ Not(a), b ]) ) )
-    t.testTableau(False, [ (bad_impl_and, False) ])
+    t.testTableau(False, [ (False, bad_impl_and) ])
     
     bad_or_and_distrib = Equivalence( Or([ a, And([ b, c ]) ]),
                                   Or([ And([ a, b ]), And([ a, c ]) ]) )
-    t.testTableau(False, [ (bad_or_and_distrib, False) ])
+    t.testTableau(False, [ (False, bad_or_and_distrib) ])
 
     ax1 = Implication(Var('dazdnik'), Not(Var('prsi')))
     ax2 = Implication(
@@ -360,12 +360,12 @@ try:
                     And( [ Var('dazdnik'), Var('mokraCesta') ] ),
                     Not(Var('vikend')),
                 )
-    t.testTableau(True, [ (Conjunction([cax1, Not(conclusion)]), True) ])
-    t.testTableau(True, [ (Implication(cax1, conclusion), False) ])
-    t.testTableau(True, [ (cax1, True), (conclusion, False) ])
-    t.testTableau(True, [ (ax1, True), (ax2, True), (ax3, True), (conclusion, False) ])
-    t.testTableau(False, [ (cax1, True) ])
-    t.testTableau(False, [ (conclusion, False) ])
+    t.testTableau(True, [ (True, Conjunction([cax1, Not(conclusion)])) ])
+    t.testTableau(True, [ (False, Implication(cax1, conclusion)) ])
+    t.testTableau(True, [ (True, cax1), (False, conclusion) ])
+    t.testTableau(True, [ (True, ax1), (True, ax2), (True, ax3), (False, conclusion) ])
+    t.testTableau(False, [ (True, cax1) ])
+    t.testTableau(False, [ (False, conclusion) ])
     
     print("END")
 

@@ -2,7 +2,7 @@ ALPHA = 1
 BETA  = 2
 
 def signedFormToString(sf):
-    formula, sign = sf
+    sign, formula = sf
     return '{} {}'.format('T' if sign else 'F', formula.toString())
 
 class Node(object):
@@ -44,7 +44,7 @@ class Node(object):
     
     def label(self):
         nsf = '({}) {}'.format(self.number,
-                               signedFormToString((self.formula, self.sign)))
+                               signedFormToString((self.sign, self.formula)))
         if self.source != None:
             return '{} ({})'.format(nsf, self.source.number)
         else:

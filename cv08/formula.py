@@ -1,4 +1,4 @@
-from tableau import ALPHA, BETA
+import tableau
 
 class Formula(object):
     def __init__(self, subs = []):

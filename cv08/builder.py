@@ -8,7 +8,7 @@ class TableauBuilder(object):
         tabl = None
         leaf = None
         for sign, formula in signedFormulas:
-            newNode = tableau.Node(formula, sign)
+            newNode = tableau.Node(sign, formula)
             if leaf is None:
                 tabl = newNode
             else:
