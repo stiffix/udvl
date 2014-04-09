@@ -4,6 +4,9 @@ class TableauBuilder(object):
     def build(self, signedFormulas):
         """ Vytvori a vrati uzavrete alebo uplne tablo pre zoznam oznacenych formul. """
 
+        # aby sa vrcholy cislovali od 1
+        tableau.Node.resetLastNumber()
+
         # vyplnime prve vrcholy podla zoznamu vstupnych formul
         tabl = None
         leaf = None
