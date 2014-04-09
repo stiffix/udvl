@@ -37,20 +37,24 @@ Pamätajte, že konjukcia a disjunkcia môžu mať viacero podformúl, takže
 tablové pravidlá v skutočnosti vyzerajú nasledovne:
 
 ```
-        F A1∧A2∧A3∧...∧An
----------------------------------
- F A1 | F A2 | F A3 | ... | F An
-
-
- T A1∧A2∧A3∧...∧An
--------------------
-       T A1
-       T A2
-       T A3
-       ...
-       T An
+ T A1 ∧ A2 ∧ A3 ∧ ... ∧ An           F A1 ∧ A2 ∧ A3 ∧ ... ∧ An
+ ───────────────────────────      ──────┬──────┬──────┬─────┬──────
+           T A1                    F A1 │ F A2 │ F A3 │ ... │ F An
+           T A2
+           T A3
+           ...
+           T An
 ```
+Ekvivalencia je konjunkcia dvoch implikácií ((A⇔B) je ekvivalentné
+((A⇒B)∧(B⇒A)), takže pravidlá pre ňu vyzerajú podobne ako pre konjunkciu, len
+podformule majú trošku zložitejší tvar:
 
+```
+ T A⇔B             F A⇔B
+───────       ───────┬───────
+ T A⇒B         F A⇒B │ F B⇒A
+ T B⇒A
+```
 
 ## Technické detaily riešenia
 
