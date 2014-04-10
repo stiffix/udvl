@@ -12,6 +12,9 @@ import itertools
 """ Nastavte na True ak chcete aby testy zastali na prvej chybe. """
 stopOnError = False
 
+""" Nastavte na True, ak chcete vidiet vystup aj pri PASSED testoch. """
+showAll = False
+
 from builder import TableauBuilder
 from tableau import Node, signedFormToString, ALPHA, BETA
 from formula import Formula, Variable, Negation, Conjunction, Disjunction, Implication, Equivalence
@@ -217,13 +220,19 @@ class Tester(object):
         if closed:
             self.closed += 1
 
-        if closed == expect_closed and not badStructure:
+        passed =  closed == expect_closed and not badStructure
+        if passed:
             self.passed += 1
             print('PASSED:  time: %12.9f   tableau size: %3d   %s' %
                     (duration, size, self.closedToString(closed)))
         else:
-            print('FAILED: \n=====TABLEAU=====\n%s\n%s' %
+            print('FAILED: ')
+
+        if not passed or showAll:
+            print('=====TABLEAU=====\n%s\n%s' %
                     (tableau.toString(), '='*13))
+
+        if not passed:
             if closed != expect_closed:
                 print('Tableau is %s, but should be %s' %
                         (self.closedToString(closed), self.closedToString(expect_closed)))
