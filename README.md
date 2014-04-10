@@ -29,6 +29,7 @@ Zadania:
 * [Cvičenie 5](cv05) (do Nedele 30.3.  23:59:59)
 * [Cvičenie 6](cv06) (do Nedele 6.4.  23:59:59)
 * [Cvičenie 7](cv07) (do Nedele 13.4.  23:59:59)
+* [Cvičenie 8](cv08) (do Nedele 20.4.  23:59:59)
 
 Bonusy:
 
