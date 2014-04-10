@@ -339,6 +339,10 @@ try:
 
     t.testTableau(True, [ (True, a), (False, a) ])
 
+    t.testTableau(False, [ (True, Or(a,b)), (False, a) ])
+
+    t.testTableau(True, [ (True, And(a,b)), (False, a) ])
+
     demorgan1 = Equivalence( Not( And([ a, b ]) ), Or([ Not(a), Not(b) ]) )
     t.testTableau(True, [ (False, demorgan1) ])
 
