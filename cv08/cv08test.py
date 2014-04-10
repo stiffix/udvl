@@ -307,6 +307,12 @@ try:
                       [ (True, Impl(a,b)), (True, Impl(b,a)) ]
                     )
     
+    t.testTableau(True, [ (False, Implication(a, a)) ])
+
+    t.testTableau(True, [ (False, Or(a, Not(a))) ])
+
+    t.testTableau(True, [ (True, a), (False, a) ])
+
     demorgan1 = Equivalence( Not( And([ a, b ]) ), Or([ Not(a), Not(b) ]) )
     t.testTableau(True, [ (False, demorgan1) ])
     
