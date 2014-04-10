@@ -39,6 +39,11 @@ class Node(object):
     
     def toString(self):
         return '\n'.join( self._lines() )
+
+    def __str__(self):
+        return '{}{}'.format(self.label(), " *" if self.closed else "")
+    def __repr__(self):
+        return 'Node< {} >'.format(str(self))
     
     _separator = ' | '
     
