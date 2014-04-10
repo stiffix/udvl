@@ -68,17 +68,17 @@ class Tester(object):
             print("OK")
         else:
             print("ERROR")
-    
+
     def closedToString(self, closed):
         return "CLOSED" if closed else "OPEN"
-    
+
     def typeToString(self, fType):
         if fType == ALPHA:
             return "ALPHA"
         if fType == BETA:
             return "BETA"
         return str(fType)
-    
+
     def testSignedForm(self, f, expTypeT, expSfsT):
         self.case += 1
         self.tested += 1
@@ -99,7 +99,7 @@ class Tester(object):
             if stopOnError:
                 raise FailedTestException()
             return
-        
+
         expSfsF = frozenset([ signedFormToString((not s, f))
                               for s, f in expSfsT ])
         expSfsT = frozenset([ signedFormToString(sf) for sf in expSfsT ])
@@ -132,7 +132,7 @@ class Tester(object):
             if stopOnError:
                 raise FailedTestException()
         print('')
-        
+
     def testTableauStructure(self, node, ancestors, strSfs):
         strSf = signedFormToString((node.sign, node.formula))
         if node.source == None:
@@ -276,37 +276,37 @@ try:
                       ALPHA,
                       [ (True, a), (True, b) ]
                     )
-    
+
     t.testSignedForm( Or([a, b]),
                       BETA,
                       [ (True, a), (True, b) ]
                     )
-    
+
     t.testSignedForm( And([a, b, c, d]),
                       ALPHA,
                       [ (True, a), (True, b), (True, c), (True, d) ]
                     )
-    
+
     t.testSignedForm( Or([a, b, c, d]),
                       BETA,
                       [ (True, a), (True, b), (True, c), (True, d) ]
                     )
-    
+
     t.testSignedForm( Or([a, Not(b), And(c, d) ]),
                       BETA,
                       [ (True, a), (True, Not(b)), (True, And([c, d])) ]
                     )
-    
+
     t.testSignedForm( Impl(a, b),
                       BETA,
                       [ (False, a), (True, b) ]
                     )
-    
+
     t.testSignedForm( Equivalence(a, b),
                       ALPHA,
                       [ (True, Impl(a,b)), (True, Impl(b,a)) ]
                     )
-    
+
     t.testTableau(True, [ (False, Implication(a, a)) ])
 
     t.testTableau(True, [ (False, Or(a, Not(a))) ])
@@ -315,51 +315,51 @@ try:
 
     demorgan1 = Equivalence( Not( And([ a, b ]) ), Or([ Not(a), Not(b) ]) )
     t.testTableau(True, [ (False, demorgan1) ])
-    
+
     demorgan2 = Equivalence( Not( Or([ a, b ]) ), And([ Not(a), Not(b) ]) )
     t.testTableau(True, [ (False, demorgan2) ])
-    
+
     demorgan3 = Equivalence( Not( Or([ a, b, c ]) ),
                              And([ Not(a), Not(b), Not(c) ]) )
     t.testTableau(True, [ (False, demorgan3) ])
-    
+
     contraposition = Equivalence( Impl(a, b), Impl( Not(b), Not(a) ) )
     t.testTableau(True, [ (False, contraposition) ])
-    
+
     impl_impl_distrib = Impl( Impl(a, Impl(b, c)),
                               Impl( Impl(a, b), Impl(a, c) ) )
     t.testTableau(True, [ (False, impl_impl_distrib) ])
-    
+
     impl_or = Equivalence( Impl(a, b), Or([ Not(a), b ]) )
     t.testTableau(True, [ (False, impl_or) ])
-    
+
     impl_and = Equivalence( Impl(a, b), Not( And([ a, Not(b) ]) ) )
     t.testTableau(True, [ (False, impl_and) ])
-    
+
     or_and_distrib = Equivalence( Or([ a, And([ b, c ]) ]),
                                   And([ Or([ a, b ]), Or([ a, c ]) ]) )
     t.testTableau(True, [ (False, or_and_distrib) ])
-    
+
     bad_demorgan1 = Equivalence( Not( And([ a, b ]) ), Or([ a, b ]) )
     t.testTableau(False, [ (False, bad_demorgan1) ])
-    
+
     bad_demorgan2 = Equivalence( Not( Or([ a, b ]) ), Or([ Not(a), Not(b) ]) )
     t.testTableau(False, [ (False, bad_demorgan2) ])
-    
+
     bad_demorgan3 = Equivalence( Not( Or([ a, b, c ]) ),
                              And([ Not(a), b, Not(c) ]) )
     t.testTableau(False, [ (False, bad_demorgan3) ])
-    
+
     bad_contraposition = Equivalence( Impl(a, b), Impl( b, a ) )
     t.testTableau(False, [ (False, bad_contraposition) ])
-    
+
     bad_impl_impl_distrib = Impl( Impl(a, Impl(b, c)),
                               Impl( Impl(b, a), Impl(c, a) ) )
     t.testTableau(False, [ (False, bad_impl_impl_distrib) ])
-    
+
     bad_impl_and = Equivalence( Impl(a, b), Not( And([ Not(a), b ]) ) )
     t.testTableau(False, [ (False, bad_impl_and) ])
-    
+
     bad_or_and_distrib = Equivalence( Or([ a, And([ b, c ]) ]),
                                   Or([ And([ a, b ]), And([ a, c ]) ]) )
     t.testTableau(False, [ (False, bad_or_and_distrib) ])
@@ -381,7 +381,7 @@ try:
     t.testTableau(True, [ (True, ax1), (True, ax2), (True, ax3), (False, conclusion) ])
     t.testTableau(False, [ (True, cax1) ])
     t.testTableau(False, [ (False, conclusion) ])
-    
+
     print("END")
 
 except FailedTestException:

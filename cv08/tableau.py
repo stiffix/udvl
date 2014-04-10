@@ -6,7 +6,7 @@ def signedFormToString(sf):
     return '{} {}'.format('T' if sign else 'F', formula.toString())
 
 class Node(object):
-    
+
     def __init__(self, sign, formula, source = None):
         self.formula = formula
         self.sign = sign
@@ -14,29 +14,29 @@ class Node(object):
         self.source = source
         self.closed = False
         self.children = []
-    
+
     _lastNumber = 0
-        
+
     @classmethod
     def resetLastNumber(self, newNumber = 0):
         self._lastNumber = newNumber
-    
+
     @classmethod
     def numberOfNodes(self):
         return self._lastNumber
-    
+
     @classmethod
     def _nextNumber(self):
         self._lastNumber += 1
         return self._lastNumber
-    
+
     def isClosed(self):
         if self.children:
             self.closed = all([ child.isClosed() for child in self.children ])
             return self.closed
         else:
             return self.closed
-    
+
     def toString(self):
         return '\n'.join( self._lines() )
 
@@ -44,9 +44,9 @@ class Node(object):
         return '{}{}'.format(self.label(), " *" if self.closed else "")
     def __repr__(self):
         return 'Node< {} >'.format(str(self))
-    
+
     _separator = ' | '
-    
+
     def label(self):
         nsf = '({}) {}'.format(self.number,
                                signedFormToString((self.sign, self.formula)))
@@ -60,7 +60,7 @@ class Node(object):
         children_wd = sum( [ child._width() for child in self.children ] )
         children_wd += len(self._separator) * max(0, len(self.children) - 1)
         return max(form_wd, children_wd)
-    
+
     def _lines(self):
         width = self._width()
 
