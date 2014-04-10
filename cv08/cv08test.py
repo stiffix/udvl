@@ -173,6 +173,32 @@ class Tester(object):
         ancestors.append(node)
         for child in node.children:
             self.testTableauStructure(child, ancestors, strSfs)
+
+        if not node.closed and node.children == []:
+            # open branch should be complete
+            branchSet = frozenset((nd.sign, nd.formula.toString()) for nd in ancestors)
+            for nd in ancestors:
+                t = nd.formula.getType(nd.sign)
+                if t == ALPHA:
+                    for sign, f in nd.formula.signedSubf(nd.sign):
+                        if not( (sign, f.toString()) in branchSet):
+                                raise BadTableauException(
+                                    ('Branch (ending at %d) is open but not complete'
+                                    + ' -- %d (ALPHA) is missing subformula %s') %
+                                    ( node.number, nd.number,
+                                        signedFormToString((sign, f))))
+                else:
+                    haveOne = False
+                    for sign, f in nd.formula.signedSubf(nd.sign):
+                        if (sign, f.toString()) in branchSet:
+                            haveOne = True
+                            break
+                    if not haveOne:
+                        raise BadTableauException(
+                                    ('Branch (ending at %d) is open but not complete'
+                                    + ' -- %d (BETA) is missing a subformula') %
+                                    ( node.number, nd.number ))
+
         ancestors.pop()
 
     def testTableau(self, expect_closed, sfs):
