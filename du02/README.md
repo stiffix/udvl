@@ -1,7 +1,7 @@
 Domáca úloha 2
 ==============
 
-Domácu úlohu odovzdávajte do Štvrtku 17.4. 9:55 (t.j. najneskôr
+Domácu úlohu odovzdávajte do Štvrtku 24.4. 9:55 (t.j. najneskôr
 na začiatku prednášky).
 
 Úlohu odovzdávajte buď fyzicky na papier formátu A4 (čitateľne označenom a
