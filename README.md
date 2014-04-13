@@ -6,6 +6,7 @@ Stránka predmetu je http://dai.fmph.uniba.sk/~siska/udvl/.
 Oznamy
 ------
 
+* **13.4.** Termín 2. domácej úlohy bol posunutý na 24.4. (17.4. je voľno).
 * **13.4.** V testovači pre cv08 bola drobná chybička, ktorá zle testovala
     úplnosť vetvy a nesprávne produkovala chyby, ak `getType` pre `Variable`
     vracala `None` (riešenia, ktoré pre `Variable` dávali typ `ALPHA` boli testované
