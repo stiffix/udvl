@@ -187,7 +187,7 @@ class Tester(object):
                                     + ' -- %d (ALPHA) is missing subformula %s') %
                                     ( node.number, nd.number,
                                         signedFormToString((sign, f))))
-                else:
+                elif t == BETA:
                     haveOne = False
                     for sign, f in nd.formula.signedSubf(nd.sign):
                         if (sign, f.toString()) in branchSet:
