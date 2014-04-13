@@ -6,6 +6,10 @@ Stránka predmetu je http://dai.fmph.uniba.sk/~siska/udvl/.
 Oznamy
 ------
 
+* **13.4.** V testovači pre cv08 bola drobná chybička, ktorá zle testovala
+    úplnosť vetvy a nesprávne produkovala chyby, ak `getType` pre `Variable`
+    vracala `None` (riešenia, ktoré pre `Variable` dávali typ `ALPHA` boli testované
+    OK). Nahraná je už opravená verzia testovača.
 * **28.3.** Prehľad o všetkých bodoch z cvičení a úloh si môžete pozrieť v súbore
     `report.md` vo vetve `report` (samozrejme nájdete ich aj v príslušných pull
     requestoch). Priame url je (nezabudnite nahradiť LOGIN za vaše
