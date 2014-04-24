@@ -46,7 +46,7 @@ class Var:
 
 class Lit:
     """ A class that represents a literal.
-        Don't create these yourselve, create a Var-iable and use the ones from there.
+        Don't create these yourselves, create a Var-iable and use the ones from there.
     """
     def __init__(self, var, sgn):
         self.var = var
@@ -103,9 +103,9 @@ class Clause(list):
             l.watchedIn.append(self)
 
     def findNewWatch(self, old):
-        """ Finds a new literal to watch if l became false.
-        Returns True if it found a new lit (or if l is ok),
-        False if there is no other acceptable literal (l won't be changed).
+        """ Finds a new literal to watch if old became false.
+        Returns True if it found a new lit (or if old is ok),
+        False if there is no other acceptable literal (old won't be changed).
         """
         # TODO
         pass

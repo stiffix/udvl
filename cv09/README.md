@@ -41,7 +41,7 @@ nič meniť. Ak ho nastavíme na `false` (lebo sme napríklad jeho negáciu nast
 na `true`) tak pre každú klauzu, v ktorej je označený, musíme nájsť nový
 literál, ktorý spĺňa horeuvedené podmienky. Môžu nastať nasledovné možností:
 - našli sme iný literál, ktorý je buď nenastavený, alebo je `true`, odteraz
-  bude označený ted,
+  bude označený ten,
 - nenašli sme už literál, ktorý by spĺňal naše podmienky (všetky ostatné sú
  `false`):
     - ak druhý označený literál bol `true`, tak to nevadí (klauza je aj tak splnená),
