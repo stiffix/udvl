@@ -15,6 +15,14 @@ class SimpleExecutableSolver:
     def cmdline(self):
         return [os.path.abspath(self.executable)]
 
+class PythonSolver:
+    def __init__(self, executable):
+        self.executable = executable
+    def compile(self):
+        return True
+    def cmdline(self):
+        return [sys.executable, self.executable]
+
 class CPPSolver:
     def __init__(self, executable):
         self.executable = executable
@@ -112,6 +120,8 @@ class SatTester:
             return CPPSolver(self.solverFile.replace('.cpp', ''))
         elif fnmatch.fnmatch(self.solverFile, '*.java'):
             return JavaSolver(self.solverFile.replace('.java', ''))
+        elif fnmatch.fnmatch(self.solverFile, '*.py'):
+            return PythonSolver(self.solverFile)
         else:
             return SimpleExecutableSolver(self.solverFile)
 
