@@ -55,8 +55,68 @@ Bonus navyše: ak backtrackujeme (meníme nejaký true alebo false literál nasp
 na nenastavený), tak nemusíme vôbec nič robiť (s označenými literálmi v klauzách;
 samotný literál/premennú samozrejme musíme korektne "odnastaviť").
 
+Dosť podrobný pseudokód riešenia:
 
-TODO pseudokod
+```
+solve:
+  readInput() # nacita clauses, vyrobi (nenastavene) vars
+  if not initWatchedLiterals():
+    return false
+  if not unitPropagate():
+    return false
+  return dpll()
+
+dpll:
+  if all vars are assigned:
+    return true
+  branchLit = chooseBranchLiteral()
+
+  for lit in branchLit and -branchLit: # backtracking
+    setLiteral(lit)
+    unitPropagate()
+    dpll()
+    unset all literals that were set in unitPropagate
+    unsetLiteral(lit)
+
+initWathcedLiterals:  # returns false if it finds a conflict / UNSAT
+  for each clause c:
+    if c is empty:
+      return false
+    if len(c) == 1:
+      c.w1 = c.w2 = c[0] # watch the same lit
+      append c[0] to unitLiterals
+    else:
+      c.w1 = c[0], c.w2 = another lit from c different then c[0]
+  return true
+
+unitPropagate:  # returns false if it finds a conflict / UNSAT
+  while unitLiterals not empty:
+    take lit from unitLiterals
+    if not setLiteral(lit):
+      return false
+  return true
+
+setLiteral(lit):  # returns false if it finds a conflict / UNSAT
+  set lit to true (-lit to false)
+  for each clause c in which -lit is watched:
+    let c.w1 be -lit, c.w2 be the other watched literal
+    if can't find new watched literal for c.w1 (insteda of -lit) in c:
+      if c.w2 is set to to false:
+        return false  # all are false in this clause
+      if c.w2 is unset:
+        # c.w2 is the last unset, no true literals -> unit propagate on c.w2
+        add c.w2 to unitLiterals
+      # else other is set to true, this is a satisfied clause, leave it be
+  return true
+
+unsetLiteral(lit):
+  set lit and -lit to unset
+  nothing else to do...
+```
+V tomto pseudokóde samozrejme nie sú riešené implementačné "drobnosti" ako reprezentovať
+literály a premenné, ako si pamatať, ktoré literály sú oznčené (watched) v klauze
+a v ktorých klauzách je označený daný literál, ako vedieť, ktoré premenné / literály
+odnastaviť atď...
 
 ## Technické detaily riešenia
 
