@@ -141,6 +141,14 @@ Za korektný beh programu sa považuje iba keď váš program skončí s návrat
 nenulová hodnota sa považuje za chybu (Runtime Error). Toto je dôležite hlavne v C++
 (`return 0;` na konci `main`), ak Python korektne skončí, tak by mal vrátiť 0.
 
+Môžete predpokladať, že počet premenných bude do 2048.
+
+### Python
+Python má limit na počet rekurzívných volaní funkcií (maximálna hĺbka stack-u).
+Štandardne je to 1000 vo väčšine implementácii.  Keďže naša dpll metóda je
+rekurzívna, možete ho ľahko dosiahnuť. Dá sa zväčšiť príkazom
+[sys.setrecursionlimit](https://docs.python.org/3.3/library/sys.html#sys.setrecursionlimit).
+
 ### C++
 Odovzdávajte program `satsolver.cpp`, ktorý musí byť skompilovateľný príkazom
 `g++ -Wall --std=c++11 -o satsolver *.cpp`.
