@@ -6,6 +6,10 @@ Stránka predmetu je http://dai.fmph.uniba.sk/~siska/udvl/.
 Oznamy
 ------
 
+* **28.4.** V pondelok 5.5. nebude normálne cvičenie (štvrtkové odpadne),
+    ale budú "konzultácie", na ktoré môžete prísť prediskutovať akékoľvek
+    otázky ohľadom cvík, domácich úloh alebo predmetu.
+* **28.4.** V programe na projektore na štvrtkových cvikách boli 2 chyby:
     * V metóde `Clause.findNewWatch` bolo priamo priradenie
       `self.watched[wi] = ...` namiesto použitia metódy `setWatch(wi, ...)`
       (hneď dvakrát ;). Toto spôsobuje, že sa korektne neudržiava pre každý
