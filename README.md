@@ -5,7 +5,14 @@ Stránka predmetu je http://dai.fmph.uniba.sk/~siska/udvl/.
 
 Oznamy
 ------
-
+* **5.5.** V programe na projektore na pondelkových cvičeniach (28.4.) bola
+     jedna chyba: v metóde `setLiteral` keď prechádzame zoznam
+    `negLit.watchedIn`, tak z neho zároveň aj odmazávame (voláme
+    `findNewWatched`, ktorá nájde iný literál a tým pádom odstráni dotyčnú
+     klauzu z `watchedIn`). Iterovanie cez pole, z ktorého zároveň mažeme,
+     je v pythone nekorektné, takže si predtým treba spraviť kópiu zoznamu,
+     napríklad`for clause in list(negLit.watchedIn):`,
+     alebo `for clause in negLit.watchedIn[:]:`.
 * **28.4.** V pondelok 5.5. nebude normálne cvičenie (štvrtkové odpadne),
     ale budú "konzultácie", na ktoré môžete prísť prediskutovať akékoľvek
     otázky ohľadom cvík, domácich úloh alebo predmetu.
