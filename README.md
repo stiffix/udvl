@@ -63,6 +63,7 @@ Zadania:
 Bonusy:
 
 * [Bonus 1](bonus01) (do Nedele 23.3.  23:59:59)
+* [Súťaž o najrýchlejší SAT solver](sat) (do Nedele 25.5. 23:59.59)
 
 Domáce úlohy
 ------------
