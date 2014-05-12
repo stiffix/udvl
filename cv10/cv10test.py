@@ -9,6 +9,8 @@
 import sys
 import time
 import traceback
+import random
+import itertools
 
 from ham import HamiltonianCycle
 
@@ -69,9 +71,11 @@ class Tester(object):
         sys.stdout.write('Case %d:  ' % (self.case,))
 
         try:
+            rs = random.getstate()
             start = now()
             r = HamiltonianCycle().find(m)
             duration = now() - start
+            random.setstate(rs)
         except KeyboardInterrupt:
             raise KeyboardInterrupt()
         except:
@@ -115,6 +119,47 @@ def edgesToIncidenceMatrix(edges):
     return m
 
 
+def randomGoodInput(size):
+    maxv = size-1
+    m = edgesToIncidenceMatrix([(maxv, maxv)])
+    for r in range(size):
+        for c in range(size):
+                m[r][c] = random.randint(0,1) == 1
+
+    sol = list(range(size))
+    random.shuffle(sol)
+    last = sol[-1]
+    for v in sol:
+        m[last][v] = True
+        last = v
+    return m
+
+
+def randomBadInput(size):
+    def goodPath(m, path):
+        last = path[-1]
+        for v in path:
+            if not m[last][v]:
+                return False
+            last = v
+        return True
+
+#    print('Generating BAD input of size %d' % size)
+    m = []
+    for r in range(size):
+        m.append([True]*size)
+
+    for perm in itertools.permutations(range(size)):
+        if goodPath(m, perm):
+            i = random.randrange(len(perm))
+            j = (i+1)%len(perm)
+            m[perm[i]][perm[j]] = False
+#    print('Done generating')
+#    print(repr(m))
+    return m
+
+random.seed(47)
+
 t = Tester()
 try:
 
@@ -149,6 +194,15 @@ try:
 
     t.test(m, True)
 
+    t.test(randomGoodInput(10), True)
+
+    t.test(randomGoodInput(20), True)
+
+    t.test(randomGoodInput(50), True)
+
+    t.test(randomBadInput(5), False)
+
+    t.test(randomBadInput(10), False)
 
     print("END")
 
