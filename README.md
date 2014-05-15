@@ -5,42 +5,6 @@ Stránka predmetu je http://dai.fmph.uniba.sk/~siska/udvl/.
 
 Oznamy
 ------
-* **5.5.** V programe na projektore na pondelkových cvičeniach (28.4.) bola
-     jedna chyba: v metóde `setLiteral` keď prechádzame zoznam
-    `negLit.watchedIn`, tak z neho zároveň aj odmazávame (voláme
-    `findNewWatched`, ktorá nájde iný literál a tým pádom odstráni dotyčnú
-     klauzu z `watchedIn`). Iterovanie cez pole, z ktorého zároveň mažeme,
-     je v pythone nekorektné, takže si predtým treba spraviť kópiu zoznamu,
-     napríklad`for clause in list(negLit.watchedIn):`,
-     alebo `for clause in negLit.watchedIn[:]:`.
-* **28.4.** V pondelok 5.5. nebude normálne cvičenie (štvrtkové odpadne),
-    ale budú "konzultácie", na ktoré môžete prísť prediskutovať akékoľvek
-    otázky ohľadom cvík, domácich úloh alebo predmetu.
-* **28.4.** V programe na projektore na štvrtkových cvikách boli 2 chyby:
-    * V metóde `Clause.findNewWatch` bolo priamo priradenie
-      `self.watched[wi] = ...` namiesto použitia metódy `setWatch(wi, ...)`
-      (hneď dvakrát ;). Toto spôsobuje, že sa korektne neudržiava pre každý
-      literál zoznam kláuz, kde je označený.
-    * V metóde `Solver.setLiteral` je potrebné ešte na začiatku
-      skontrolovať, či ten literál už nie je nastavený (nespraviť nič, ak je
-      už nastavený správne, vrátiť `False`, ak je už nastavený opačne, aj
-      keď tento prípad by nastať nemal, lebo to by sa zistilo počas
-      vyberania nového označeného literálu). Toto môže nastať, ak počas
-      unitPropagte viacero klauz nastaví daný literál
-      (napríklad `1 0 -1 2 0 -1 2 0`).
-* **13.4.** Termín 2. domácej úlohy bol posunutý na 24.4. (17.4. je voľno).
-* **13.4.** V testovači pre cv08 bola drobná chybička, ktorá zle testovala
-    úplnosť vetvy a nesprávne produkovala chyby, ak `getType` pre `Variable`
-    vracala `None` (riešenia, ktoré pre `Variable` dávali typ `ALPHA` boli testované
-    OK). Nahraná je už opravená verzia testovača.
-* **28.3.** Prehľad o všetkých bodoch z cvičení a úloh si môžete pozrieť v súbore
-    `report.md` vo vetve `report` (samozrejme nájdete ich aj v príslušných pull
-    requestoch). Priame url je (nezabudnite nahradiť LOGIN za vaše
-    prihlasovacie meno):
-
-       https://github.com/FMFI-UK-1-AIN-411-2014/LOGIN/blob/report/report.md
-* **27.3.** Midterm bude vo štvrtok 10.4. o 18:10 (po cvičeniach) v posluchárni B.
-* **21.3.** du01: pridaná možnosť odovzdávať .txt a poznámka o tom ako nahrávať binárne súbory
 
 Cvičenia
 --------
@@ -81,3 +45,42 @@ svoj súhlas s nasledovnými podmienkami:
 - Do repozitára budete nahrávať iba materiály, ktoré máte právo zverejniť
   (vzhľadom na autorské práva, iné zákony a pravidlá).
 Tieto podmienky sú súčasťou podmienok na absolvovanie tohoto predmetu.
+
+Staré (neaktuálne) oznamy
+-------------------------
+* **5.5.** V programe na projektore na pondelkových cvičeniach (28.4.) bola
+     jedna chyba: v metóde `setLiteral` keď prechádzame zoznam
+    `negLit.watchedIn`, tak z neho zároveň aj odmazávame (voláme
+    `findNewWatched`, ktorá nájde iný literál a tým pádom odstráni dotyčnú
+     klauzu z `watchedIn`). Iterovanie cez pole, z ktorého zároveň mažeme,
+     je v pythone nekorektné, takže si predtým treba spraviť kópiu zoznamu,
+     napríklad`for clause in list(negLit.watchedIn):`,
+     alebo `for clause in negLit.watchedIn[:]:`.
+* **28.4.** V pondelok 5.5. nebude normálne cvičenie (štvrtkové odpadne),
+    ale budú "konzultácie", na ktoré môžete prísť prediskutovať akékoľvek
+    otázky ohľadom cvík, domácich úloh alebo predmetu.
+* **28.4.** V programe na projektore na štvrtkových cvikách boli 2 chyby:
+    * V metóde `Clause.findNewWatch` bolo priamo priradenie
+      `self.watched[wi] = ...` namiesto použitia metódy `setWatch(wi, ...)`
+      (hneď dvakrát ;). Toto spôsobuje, že sa korektne neudržiava pre každý
+      literál zoznam kláuz, kde je označený.
+    * V metóde `Solver.setLiteral` je potrebné ešte na začiatku
+      skontrolovať, či ten literál už nie je nastavený (nespraviť nič, ak je
+      už nastavený správne, vrátiť `False`, ak je už nastavený opačne, aj
+      keď tento prípad by nastať nemal, lebo to by sa zistilo počas
+      vyberania nového označeného literálu). Toto môže nastať, ak počas
+      unitPropagte viacero klauz nastaví daný literál
+      (napríklad `1 0 -1 2 0 -1 2 0`).
+* **13.4.** Termín 2. domácej úlohy bol posunutý na 24.4. (17.4. je voľno).
+* **13.4.** V testovači pre cv08 bola drobná chybička, ktorá zle testovala
+    úplnosť vetvy a nesprávne produkovala chyby, ak `getType` pre `Variable`
+    vracala `None` (riešenia, ktoré pre `Variable` dávali typ `ALPHA` boli testované
+    OK). Nahraná je už opravená verzia testovača.
+* **28.3.** Prehľad o všetkých bodoch z cvičení a úloh si môžete pozrieť v súbore
+    `report.md` vo vetve `report` (samozrejme nájdete ich aj v príslušných pull
+    requestoch). Priame url je (nezabudnite nahradiť LOGIN za vaše
+    prihlasovacie meno):
+
+       https://github.com/FMFI-UK-1-AIN-411-2014/LOGIN/blob/report/report.md
+* **27.3.** Midterm bude vo štvrtok 10.4. o 18:10 (po cvičeniach) v posluchárni B.
+* **21.3.** du01: pridaná možnosť odovzdávať .txt a poznámka o tom ako nahrávať binárne súbory
