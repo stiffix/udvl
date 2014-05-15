@@ -5,6 +5,12 @@ Stránka predmetu je http://dai.fmph.uniba.sk/~siska/udvl/.
 
 Oznamy
 ------
+* **15.5.** Záverečný test bude v dvoch (regulérnych) termínoch:
+    vo štvrtok 22.5. o ***18:10*** v F1 a v zatial neurčenom termíne počas
+    prvého týždňa skúškového (do pondelka večera môžete zahlasovať
+    v [doodle](http://doodle.com/9fihg3mnv3sk5vhw)). Na obidva termíny
+    sa treba zapísať v AISe (druhý termín sa tam objaví keď sa rozhodne
+    o jeho dátume).
 
 Cvičenia
 --------
