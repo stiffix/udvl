@@ -4,6 +4,8 @@ Súťaž o najrýchlejší SAT solver
 **Súťaž končí v nedeľu 25.5. 23:59:59. Riešenia po tomto termíne už nebudú
 akceptované.**
 
+Priebežné výsledky môžete videť v tabuľke [satsolvers.md](satsolvers.md).
+
 Cieľom je naprogramovať čo najrýchlejší SAT solver.
 
 Technické požiadavky sú rovnaké ako v
@@ -57,7 +59,7 @@ SAT solvery budú vyhodnotené formou súťaže a budú usporiadané nasledovne:
 1. Študent na i-tom mieste získa max(0,11-i) bodov. Prvé miesto je najvyššie.
 
 Riešenia budú hodnotenie priebežne podľa časových možností ;) a výsledky
-budú zverejňované niekde tu.
+budú zverejňované v tabuľke [satsolvers.md](satsolvers.md).
 
 **Súťaž končí v nedeľu 25.5. 23:59:59. Riešenia po tomto termíne už nebudú
 akceptované.** Finálne výsledky a body budú zverejnené v krátkej dobe po tomto
