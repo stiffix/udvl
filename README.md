@@ -5,6 +5,8 @@ Stránka predmetu je http://dai.fmph.uniba.sk/~siska/udvl/.
 
 Oznamy
 ------
+* **21.5.** V adresári [slides](slides) sú *nejaké|* poznámky/slajdy
+    k (nie všetkým) prednáškam.
 * **20.5.** Druhý riadny termín na záverečný test bude
     vo štvrtok 29.5. o 14:00 v F1. **Na obidva termíny sa treba
     zapísať v AISe.**
